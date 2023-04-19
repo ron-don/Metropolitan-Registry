@@ -9,12 +9,13 @@ import java.time.LocalDate;
 @Table(name="t_children")
 @Getter
 @Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+//@ToString
 public class Child {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long registrationNumber;
     private String name;
     private String placeOfBirth;
