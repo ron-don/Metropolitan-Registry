@@ -1,10 +1,7 @@
 package com.ronnytech.registry.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -14,10 +11,11 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Child {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String registrationNumber;
+    private Long registrationNumber;
     private String name;
     private String placeOfBirth;
     private LocalDate dateOfBirth;
@@ -26,5 +24,5 @@ public class Child {
     private String motherName;
     private Integer motherAge;
     private String motherOccupation;
-    
+    private String motherMaritalStatus;
 }
