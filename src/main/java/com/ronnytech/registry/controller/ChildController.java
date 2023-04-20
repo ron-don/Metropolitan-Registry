@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,6 @@ import java.util.stream.Collectors;
 public class ChildController {
 
     private final ChildService childService;
-
     private List<Child> children =  new ArrayList<>();
     private final ChildRepository childRepository;
 
@@ -38,26 +38,21 @@ public class ChildController {
                 HttpStatus.CREATED)
                 : new ResponseEntity<>(childRepository.save(child), HttpStatus.OK);
     }
-    @GetMapping("/allchildren")
-    public List<Child> getAllChildren() {
-        return childService.getAllChildren();
-    }
-
 //    @GetMapping("/allchildren")
-//    public ResponseEntity<Page<Child>> getAllChildren(@RequestParam(defaultValue = "0") Integer page,
-//                                                      @RequestParam(defaultValue = "10") Integer perPage) {
-//        int total = children.size();
-//        int totalPages = (int) Math.ceil((double) total / perPage);
-//
-//        List<Child> childrenPage = children.stream()
-//                .skip(page * perPage)
-//                .limit(perPage)
-//                .collect(Collectors.toList());
-//
-//        Page<Child> response = new PageImpl<>(childrenPage, PageRequest.of(page, perPage), total);
-//
-//        return ResponseEntity.ok(response);
-//       }
+//    public List<Child> getAllChildren() {
+//        return childService.getAllChildren();
+//    }
+
+    @GetMapping("/allchildren")
+    public ResponseEntity<List<Child>> getAllChildren(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "registrationNumber") String sortBy)
+    {
+        List<Child> list = childService.getAllChildren(pageNo, pageSize, sortBy);
+
+        return new ResponseEntity<List<Child>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
 
 //    @GetMapping("/search")
 //    public ResponseEntity<List<Child>> searchChild(@RequestParam String name) {
