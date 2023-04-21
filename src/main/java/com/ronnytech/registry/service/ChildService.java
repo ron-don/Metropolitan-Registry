@@ -4,7 +4,9 @@ import com.ronnytech.registry.model.Child;
 import com.ronnytech.registry.repository.ChildRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.util.List;
 public class ChildService {
     private final ChildRepository childRepository;
 
-    // fetch all children method
+    // fetch all children method without pagination
     public List<Child> getAllChildren() {
 
         List<Child> children = new ArrayList<>();
@@ -36,26 +38,26 @@ public class ChildService {
         return true;
     }
 
-//    public Page<Child> searchChildrenByName(String name, Pageable pageable) {
-//        Page<Child> children = childRepository.findByNameContainingIgnoreCase(name, pageable);
-//        return children.map(child -> new Child(child));
-//    }
-
-//    public List<Child> getAllChildren(Integer pageNo, Integer pageSize)
-//    {
-//        Pageable pageable = (Pageable) PageRequest.of(pageNo, pageSize);
-//
-//        Page<Child> pagedResult = childRepository.findAll((org.springframework.data.domain.Pageable) pageable);
-//
-//        if(pagedResult.hasContent()) {
-//            return pagedResult.getContent();
-//        } else {
-//            return new ArrayList<Child>();
-//        }
-//    }
-
-//     search child by name method
+    //     search child by name method
     public List<Child> searchChild(String name) {
         return childRepository.findByNameContainingIgnoreCase(name);
     }
+
+    public Page<Child> getAllChildren(Integer pageNo, Integer pageSize, String sortBy)
+    {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        Page<Child> pagedResult = childRepository.findAll(paging);
+
+        return pagedResult.map(Child::new);
+
+//        if(pagedResult.hasContent()) {
+//            return (Page<Child>) pagedResult.getContent();
+//        } else {
+//            return (Page<Child>) new ArrayList<Child>();
+//        }
+    }
+
+
+
 }

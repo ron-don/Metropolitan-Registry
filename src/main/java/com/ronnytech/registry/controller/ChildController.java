@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,33 +38,29 @@ public class ChildController {
                 HttpStatus.CREATED)
                 : new ResponseEntity<>(childRepository.save(child), HttpStatus.OK);
     }
-    @GetMapping("/allchildren")
-    public List<Child> getAllChildren() {
-        return childService.getAllChildren();
-    }
-
-//    @GetMapping("/allchildren")
-//    public ResponseEntity<List<Child>> getAllChildren(
-//            @RequestParam(defaultValue = "0") Integer pageNo,
-//            @RequestParam(defaultValue = "10") Integer pageSize)
-//    {
-//        List<Child> list = childService.getAllChildren(pageNo, pageSize);
-//
-//        return new ResponseEntity<List<Child>>(list, new HttpHeaders(), HttpStatus.OK);
-//    }
-
-//    @GetMapping("/search/{name}")
-//    public ResponseEntity<Page<Child>> searchChildrenByName(@RequestParam(defaultValue = "") String name,
-//                                                               @RequestParam(defaultValue = "0") int page,
-//                                                               @RequestParam(defaultValue = "10") int per_page) {
-//        Page<Child> children = childService.searchChildrenByName(name, (Pageable) PageRequest.of(page, per_page));
-//        return ResponseEntity.ok(children);
-//    }
 
     @GetMapping("/search/{name}")
     public ResponseEntity<List<Child>> searchChild(@PathVariable String name) {
         List<Child> result = childService.searchChild(name);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    // with pagination
+    @GetMapping("/allchildren")
+    public ResponseEntity<Page<Child>> getAllChildren(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "registrationNumber") String sortBy)
+    {
+        Page<Child> childrenPage = (Page<Child>) childService.getAllChildren(pageNo, pageSize, sortBy);
+
+        return new ResponseEntity<Page<Child>>(childrenPage, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    // without pagination
+    @GetMapping("/allchildrens")
+    public List<Child> getAllChildren() {
+        return childService.getAllChildren();
     }
 
     @ExceptionHandler(Exception.class)

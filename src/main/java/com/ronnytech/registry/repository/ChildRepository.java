@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ChildRepository extends JpaRepository<Child, Long> {
 
-//    List<Child> findChildrenByRegistrationNumber(long registrationNumber, Pageable pageable);
+    List<Child> findChildrenByRegistrationNumber(long registrationNumber, Pageable pageable);
 
     List<Child> findByNameContainingIgnoreCase(String name);
 }
