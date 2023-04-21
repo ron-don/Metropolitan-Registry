@@ -33,9 +33,8 @@ public class ChildService {
     }
 
     // edit/update child details method
-    public boolean updateChild(Child child) {
+    public void updateChild(Child child) {
         childRepository.save(child);
-        return true;
     }
 
     //     search child by name method

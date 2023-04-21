@@ -5,14 +5,11 @@ import com.ronnytech.registry.repository.ChildRepository;
 import com.ronnytech.registry.service.ChildService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,9 +22,9 @@ public class ChildController {
     private final ChildRepository childRepository;
 
     @PostMapping("/addchild")
-    public ResponseEntity<Child> addChild(@RequestBody Child child) {
+    public ResponseEntity<String> addChild(@RequestBody Child child) {
         childService.addChild(child);
-        return  new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.ok("Child added successfully");
     }
 
     @PutMapping("/editchild/{registrationNumber}")
