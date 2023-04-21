@@ -9,10 +9,10 @@ import java.time.LocalDate;
 @Table(name="t_children")
 @Getter
 @Setter
-@Data
+//@Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
+@ToString
 public class Child {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +26,7 @@ public class Child {
     private Integer motherAge;
     private String motherOccupation;
     private String motherMaritalStatus;
+
+    public Child(Child child) {
+    }
 }
